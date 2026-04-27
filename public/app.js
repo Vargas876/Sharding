@@ -44,8 +44,8 @@ function planTag(plan) {
 
 function activoBadge(activo) {
   return activo
-    ? `<span class="status-ok">● Activo</span>`
-    : `<span class="status-err">○ Inactivo</span>`;
+    ? `<span class="status-ok"> Activo</span>`
+    : `<span class="status-err"> Inactivo</span>`;
 }
 
 // ============================================================
@@ -76,20 +76,20 @@ async function insertarClienteH(e) {
 
     const color = SHARD_COLORS[data.shard];
     showResult('result-insert-h', `
-✅ ${data.mensaje}
+[✓] ${data.mensaje}
 
-🔢 Fórmula: ${data.formula}
-🟦 Asignado a: <span style="color:${color};font-weight:700">Shard ${data.shard}</span>
+• Fórmula: ${data.formula}
+• Asignado a: <span style="color:${color};font-weight:700">Shard ${data.shard}</span>
     `, 'success');
 
     document.getElementById('form-h-insert').reset();
     await cargarTodosH();
 
   } catch (err) {
-    showResult('result-insert-h', `❌ Error: ${err.message}`, 'error');
+    showResult('result-insert-h', `[!] Error: ${err.message}`, 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Insertar →';
+    btn.textContent = 'Insertar';
   }
 }
 
@@ -110,11 +110,11 @@ async function buscarClienteH(e) {
 
     if (!res.ok) {
       showResult('result-search-h', `
-❌ No encontrado
+[✗] No encontrado
 
-🔢 Fórmula: ${data.formula}
-📍 Se buscó en: Shard ${data.shard} (único shard posible)
-⚡ Solo 1 de 3 shards fue consultado
+• Fórmula: ${data.formula}
+• Se buscó en: Shard ${data.shard} (único shard posible)
+ℹ Solo 1 de 3 shards fue consultado
       `, 'error');
       return;
     }
@@ -122,11 +122,11 @@ async function buscarClienteH(e) {
     const color = SHARD_COLORS[data.shard];
     const r = data.registro;
     showResult('result-search-h', `
-✅ Cliente encontrado
+[✓] Cliente encontrado
 
-🔢 Fórmula: ${data.formula}
-📍 Encontrado en: <span style="color:${color};font-weight:700">Shard ${data.shard}</span>
-⚡ Solo 1 de 3 shards fue consultado
+• Fórmula: ${data.formula}
+• Encontrado en: <span style="color:${color};font-weight:700">Shard ${data.shard}</span>
+ℹ Solo 1 de 3 shards fue consultado
 
    ID:     ${r.id}
    Nombre: ${r.nombre}
@@ -135,10 +135,10 @@ async function buscarClienteH(e) {
     `, 'success');
 
   } catch (err) {
-    showResult('result-search-h', `❌ Error de conexión: ${err.message}`, 'error');
+    showResult('result-search-h', `[!] Error de conexión: ${err.message}`, 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Buscar →';
+    btn.textContent = 'Buscar';
   }
 }
 
@@ -208,7 +208,7 @@ async function cargarTodosH() {
 
   } catch (err) {
     document.getElementById('shards-grid').innerHTML =
-      `<div class="shard-loading" style="color:#fca5a5">❌ Error cargando datos: ${err.message}</div>`;
+      `<div class="shard-loading" style="color:#fca5a5"> Error cargando datos: ${err.message}</div>`;
   }
 }
 
@@ -245,25 +245,25 @@ async function insertarUsuarioV(e) {
     const p = data.tabla_perfil;
     const a = data.tabla_actividad;
     showResult('result-insert-v', `
-✅ ${data.mensaje}
+[✓] ${data.mensaje}
 
-🟢 usuarios_perfil:
+• usuarios_perfil:
    id: ${p.id} | nombre: ${p.nombre} | plan: ${p.plan}
 
-🟠 usuarios_actividad:
+• usuarios_actividad:
    usuario_id: ${a.usuario_id} | compras: ${a.total_compras} | score: ${a.score}
 
-🔗 JOIN los reconstruye como una sola fila
+ℹ JOIN los reconstruye como una sola fila
     `, 'success');
 
     document.getElementById('form-v-insert').reset();
     await cargarTodosV();
 
   } catch (err) {
-    showResult('result-insert-v', `❌ Error: ${err.message}`, 'error');
+    showResult('result-insert-v', `[!] Error: ${err.message}`, 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Insertar en ambas tablas →';
+    btn.textContent = 'Insertar en ambas tablas';
   }
 }
 
@@ -286,30 +286,30 @@ async function buscarUsuarioV(e) {
 
     const r = data.registro;
     showResult('result-search-v', `
-✅ Registro reconstruido con JOIN
+[✓] Registro reconstruido con JOIN
 
-🟢 De usuarios_perfil:
+• De usuarios_perfil:
    nombre: ${r.nombre}
    email:  ${r.email}
    país:   ${r.pais}
    plan:   ${r.plan}
 
-🟠 De usuarios_actividad:
+• De usuarios_actividad:
    último login:   ${r.ultimo_login}
    total compras:  ${r.total_compras}
    score:          ${r.score}
    activo:         ${r.activo ? 'Sí' : 'No'}
 
-🔗 SQL: SELECT * FROM usuarios_perfil p
+ℹ SQL: SELECT * FROM usuarios_perfil p
         JOIN usuarios_actividad a ON p.id = a.usuario_id
         WHERE p.id = ${id}
     `, 'success');
 
   } catch (err) {
-    showResult('result-search-v', `❌ Error: ${err.message}`, 'error');
+    showResult('result-search-v', `[!] Error: ${err.message}`, 'error');
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Hacer JOIN →';
+    btn.textContent = 'Hacer JOIN';
   }
 }
 
@@ -353,7 +353,7 @@ async function cargarTodosV() {
     grid.innerHTML = `
       <div class="v-panel v-panel--perfil">
         <div class="v-panel-header">
-          <span>🟢 usuarios_perfil</span>
+          <span><svg style="width:14px;height:14px;margin-right:4px;vertical-align:middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg> usuarios_perfil</span>
           <span class="shard-badge">${perfiles.length} filas · identidad</span>
         </div>
         <div class="v-panel-body">
@@ -366,7 +366,7 @@ async function cargarTodosV() {
 
       <div class="v-panel v-panel--activ">
         <div class="v-panel-header">
-          <span>🟠 usuarios_actividad</span>
+          <span><svg style="width:14px;height:14px;margin-right:4px;vertical-align:middle" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> usuarios_actividad</span>
           <span class="shard-badge">${activos.length} filas · operacional</span>
         </div>
         <div class="v-panel-body">
@@ -379,7 +379,96 @@ async function cargarTodosV() {
 
   } catch (err) {
     document.getElementById('v-tables-grid').innerHTML =
-      `<div class="shard-loading" style="color:#fca5a5">❌ Error cargando tablas: ${err.message}</div>`;
+      `<div class="shard-loading" style="color:#fca5a5">[!] Error cargando tablas: ${err.message}</div>`;
+  }
+}
+
+// ============================================================
+// VALIDACIÓN — HORIZONTAL
+// Ejecuta GET /horizontal/validate y renderiza resultados
+// ============================================================
+async function validarHorizontal() {
+  const btn = document.getElementById('btn-val-h');
+  btn.disabled = true;
+  btn.textContent = 'Validando...';
+
+  try {
+    const res  = await fetch(`${API}/horizontal/validate`);
+    const data = await res.json();
+
+    const dist = data.pct_por_shard.map(s =>
+      `  Shard ${s.shard}: ${String(s.total).padStart(2)} registros · ${s.porcentaje}`
+    ).join('\n');
+
+    const iconoGlobal = data.ok ? '[✓]' : '[✗]';
+    const iconoHash   = data.inconsistencias_hash === 0 ? '✓' : '✗';
+    const iconoDist   = data.ok ? '✓' : '✗';
+
+    showResult('result-val-h', `
+${iconoGlobal} ${data.mensaje}
+
+• Distribución de ${data.total_registros} registros:
+${dist}
+
+[${iconoDist}] Distribución uniforme: ~33% por shard
+[${iconoHash}] Consistencia del hash: ${data.inconsistencias_hash === 0
+  ? 'Sin inconsistencias — cada ID está en su shard canónico'
+  : `${data.inconsistencias_hash} registro(s) en shard incorrecto`}
+ℹ Sin duplicados entre shards (hash determinista)
+    `, data.ok ? 'success' : 'error');
+
+  } catch (err) {
+    showResult('result-val-h', `[!] Error de conexión: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Ejecutar validación horizontal';
+  }
+}
+
+// ============================================================
+// VALIDACIÓN — VERTICAL
+// Ejecuta GET /vertical/validate y renderiza resultados
+// ============================================================
+async function validarVertical() {
+  const btn = document.getElementById('btn-val-v');
+  btn.disabled = true;
+  btn.textContent = 'Validando...';
+
+  try {
+    const res  = await fetch(`${API}/vertical/validate`);
+    const data = await res.json();
+
+    const iconoGlobal = data.ok ? '[✓]' : '[✗]';
+    const iconoSync   = data.tablas_sincronizadas ? '✓' : '✗';
+    const iconoHuerf  = (data.huerfanos_perfil.length === 0 && data.huerfanos_actividad.length === 0) ? '✓' : '✗';
+
+    // Calcular columnas totales reconstruidas por JOIN
+    const colsPerfil   = 5; // id, nombre, email, pais, plan
+    const colsActividad= 5; // usuario_id, ultimo_login, total_compras, score, activo
+    const colsJoin     = colsPerfil + colsActividad - 1; // -1 porque id es compartido
+
+    showResult('result-val-v', `
+${iconoGlobal} ${data.mensaje}
+
+• usuarios_perfil:    ${data.total_perfil} fila(s) · ${colsPerfil} columnas (datos fríos)
+• usuarios_actividad: ${data.total_actividad} fila(s) · ${colsActividad} columnas (datos calientes)
+
+[${iconoSync}] Tablas sincronizadas: ${data.tablas_sincronizadas ? 'Sí' : 'No — conteos distintos'}
+[${iconoHuerf}] Sin huérfanos en perfil:    ${data.huerfanos_perfil.length === 0 ? 'Correcto' : `${data.huerfanos_perfil.length} huérfano(s)`}
+[${iconoHuerf}] Sin huérfanos en actividad: ${data.huerfanos_actividad.length === 0 ? 'Correcto' : `${data.huerfanos_actividad.length} huérfano(s)`}
+
+ℹ JOIN reconstruye: ${colsJoin} columnas por fila (integridad total)
+ℹ SQL utilizado:
+   SELECT p.*, a.ultimo_login, a.total_compras, a.score, a.activo
+   FROM usuarios_perfil p
+   JOIN usuarios_actividad a ON p.id = a.usuario_id
+    `, data.ok ? 'success' : 'error');
+
+  } catch (err) {
+    showResult('result-val-v', `[!] Error de conexión: ${err.message}`, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Ejecutar validación vertical';
   }
 }
 

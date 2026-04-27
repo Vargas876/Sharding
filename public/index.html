@@ -15,16 +15,19 @@
   <header class="header">
     <div class="header-inner">
       <div class="logo">
-        <span class="logo-icon">⬡</span>
+        <span class="logo-icon"></span>
         <span class="logo-text">ShardingDB</span>
         <span class="logo-badge">Demo</span>
       </div>
       <nav class="tabs" role="tablist" aria-label="Tipo de sharding">
         <button class="tab tab--active" id="tab-h" role="tab" aria-selected="true" aria-controls="panel-h" onclick="switchTab('h')">
-          <span class="tab-icon">↔</span> Sharding Horizontal
+          <svg style="width:14px;height:14px;margin-right:6px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 3 4 4-4 4"/><path d="M12 7H4"/><path d="m16 21-4-4 4-4"/><path d="M12 17h8"/></svg> Sharding Horizontal
         </button>
         <button class="tab" id="tab-v" role="tab" aria-selected="false" aria-controls="panel-v" onclick="switchTab('v')">
-          <span class="tab-icon">↕</span> Sharding Vertical
+          <svg style="width:14px;height:14px;margin-right:6px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/></svg> Sharding Vertical
+        </button>
+        <button class="tab" id="tab-val" role="tab" aria-selected="false" aria-controls="panel-val" onclick="switchTab('val')">
+          <svg style="width:14px;height:14px;margin-right:6px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Validación
         </button>
       </nav>
     </div>
@@ -38,7 +41,7 @@
       <!-- Concepto -->
       <div class="concept-card">
         <div class="concept-header">
-          <span class="concept-icon">↔</span>
+          <span class="concept-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3H3"/><path d="M21 12H3"/><path d="M21 21H3"/></svg></span>
           <div>
             <h1 class="concept-title">Sharding Horizontal</h1>
             <p class="concept-sub">Particionamiento de <strong>filas</strong> — cada fila va a un shard diferente según su ID</p>
@@ -56,7 +59,7 @@
               <span>Cada shard contiene un subconjunto de las filas totales</span>
             </div>
           </div>
-          <div class="ci-arrow">→</div>
+          <div class="ci-arrow"></div>
           <div class="concept-item">
             <span class="ci-number">02</span>
             <div class="ci-text">
@@ -64,7 +67,7 @@
               <span>La función hash determina en qué shard buscar o escribir</span>
             </div>
           </div>
-          <div class="ci-arrow">→</div>
+          <div class="ci-arrow"></div>
           <div class="concept-item">
             <span class="ci-number">03</span>
             <div class="ci-text">
@@ -100,7 +103,7 @@
               <label class="field-label" for="h-ciudad">Ciudad</label>
               <input class="field-input" id="h-ciudad" type="text" placeholder="Bogotá" required />
             </div>
-            <button class="btn btn--primary" type="submit" id="btn-insert-h">Insertar →</button>
+            <button class="btn btn--primary" type="submit" id="btn-insert-h">Insertar </button>
           </form>
           <div id="result-insert-h" class="result-box result-box--hidden"></div>
         </div>
@@ -116,7 +119,7 @@
               <label class="field-label" for="h-search-id">ID del cliente</label>
               <input class="field-input" id="h-search-id" type="number" placeholder="5" min="1" required />
             </div>
-            <button class="btn btn--secondary" type="submit" id="btn-search-h">Buscar →</button>
+            <button class="btn btn--secondary" type="submit" id="btn-search-h">Buscar </button>
           </form>
           <div id="result-search-h" class="result-box result-box--hidden"></div>
         </div>
@@ -127,7 +130,7 @@
       <div class="shards-section">
         <div class="section-header">
           <h2 class="section-title">Distribución de Shards en tiempo real</h2>
-          <button class="btn btn--ghost btn--sm" onclick="cargarTodosH()">↺ Actualizar</button>
+          <button class="btn btn--ghost btn--sm" onclick="cargarTodosH()"> Actualizar</button>
         </div>
         <div id="stats-bar" class="stats-bar"></div>
         <div id="shards-grid" class="shards-grid">
@@ -143,7 +146,7 @@
       <!-- Concepto -->
       <div class="concept-card concept-card--v">
         <div class="concept-header">
-          <span class="concept-icon">↕</span>
+          <span class="concept-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3v18"/><path d="M15 3v18"/></svg></span>
           <div>
             <h1 class="concept-title">Sharding Vertical</h1>
             <p class="concept-sub">Particionamiento de <strong>columnas</strong> — una tabla se divide en tablas especializadas</p>
@@ -171,7 +174,7 @@
           <div class="v-arrow">⬇ Split</div>
           <div class="v-split-row">
             <div class="v-table v-table--perfil">
-              <div class="vt-header vt-header--perfil">🟢 usuarios_perfil</div>
+              <div class="vt-header vt-header--perfil"><svg style="width:14px;height:14px;margin-right:4px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 1 0-16 0"/></svg> usuarios_perfil</div>
               <div class="vt-cols">
                 <span class="col-tag col-tag--perfil">id</span>
                 <span class="col-tag col-tag--perfil">nombre</span>
@@ -182,7 +185,7 @@
             </div>
             <div class="v-join-hint">JOIN</div>
             <div class="v-table v-table--activ">
-              <div class="vt-header vt-header--activ">🟠 usuarios_actividad</div>
+              <div class="vt-header vt-header--activ"><svg style="width:14px;height:14px;margin-right:4px;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg> usuarios_actividad</div>
               <div class="vt-cols">
                 <span class="col-tag col-tag--activ">usuario_id</span>
                 <span class="col-tag col-tag--activ">ultimo_login</span>
@@ -236,7 +239,7 @@
               <label class="field-label" for="v-score">Score</label>
               <input class="field-input" id="v-score" type="number" step="0.1" placeholder="5.0" min="0" max="10" />
             </div>
-            <button class="btn btn--primary" type="submit" id="btn-insert-v">Insertar en ambas tablas →</button>
+            <button class="btn btn--primary" type="submit" id="btn-insert-v">Insertar en ambas tablas </button>
           </form>
           <div id="result-insert-v" class="result-box result-box--hidden"></div>
         </div>
@@ -252,7 +255,7 @@
               <label class="field-label" for="v-search-id">ID del usuario</label>
               <input class="field-input" id="v-search-id" type="number" placeholder="3" min="1" required />
             </div>
-            <button class="btn btn--secondary" type="submit" id="btn-search-v">Hacer JOIN →</button>
+            <button class="btn btn--secondary" type="submit" id="btn-search-v">Hacer JOIN </button>
           </form>
           <div id="result-search-v" class="result-box result-box--hidden"></div>
         </div>
@@ -263,10 +266,119 @@
       <div class="shards-section">
         <div class="section-header">
           <h2 class="section-title">Tablas verticales en tiempo real</h2>
-          <button class="btn btn--ghost btn--sm" onclick="cargarTodosV()">↺ Actualizar</button>
+          <button class="btn btn--ghost btn--sm" onclick="cargarTodosV()"> Actualizar</button>
         </div>
         <div id="v-tables-grid" class="v-tables-grid">
           <div class="shard-loading">Cargando datos...</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====== PANEL VALIDACIÓN ====== -->
+    <section id="panel-val" class="panel" role="tabpanel" aria-labelledby="tab-val">
+
+      <!-- Concepto -->
+      <div class="concept-card concept-card--val">
+        <div class="concept-header">
+          <span class="concept-icon" style="background:rgba(250,204,21,0.1);border-color:rgba(250,204,21,0.2)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          </span>
+          <div>
+            <h1 class="concept-title">Plan de Validación</h1>
+            <p class="concept-sub">Verifica <strong>consistencia</strong>, <strong>distribución</strong> e <strong>integridad referencial</strong> de ambos esquemas de sharding</p>
+          </div>
+        </div>
+        <div class="formula-block" style="border-left-color:#facc15">
+          <code class="formula" style="color:#fde047">GET /horizontal/validate · GET /vertical/validate</code>
+          <span class="formula-label">Endpoints de validación automatizada</span>
+        </div>
+      </div>
+
+      <!-- Validaciones Horizontales -->
+      <div class="val-section">
+        <h2 class="section-title" style="margin-bottom:16px">9.1 · Validación Sharding Horizontal</h2>
+        <div class="val-grid">
+
+          <div class="val-card" id="val-h-dist">
+            <div class="val-card-header">
+              <span class="val-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+              </span>
+              <div>
+                <strong>Distribución uniforme</strong>
+                <span>Verificar ~33% por shard</span>
+              </div>
+            </div>
+            <p class="val-desc">Insertar múltiples registros y comprobar que la función hash distribuye homogéneamente entre los 3 shards.</p>
+            <button class="btn btn--val" id="btn-val-h" onclick="validarHorizontal()">
+              Ejecutar validación horizontal 
+            </button>
+            <div id="result-val-h" class="result-box result-box--hidden" style="margin-top:12px"></div>
+          </div>
+
+          <div class="val-card" id="val-h-hash">
+            <div class="val-card-header">
+              <span class="val-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </span>
+              <div>
+                <strong>Consistencia del hash</strong>
+                <span>Mismo ID → mismo shard siempre</span>
+              </div>
+            </div>
+            <p class="val-desc">El mismo ID debe caer siempre en su shard canónico. No pueden existir duplicados entre shards.</p>
+            <div class="val-demo">
+              <span class="val-formula">ID 5 → 5 % 3 = <strong style="color:#10b981">2</strong></span>
+              <span class="val-formula">ID 5 siempre → <strong style="color:#10b981">Shard 2</strong></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Validaciones Verticales -->
+      <div class="val-section">
+        <h2 class="section-title" style="margin-bottom:16px">9.2 · Validación Sharding Vertical</h2>
+        <div class="val-grid">
+
+          <div class="val-card" id="val-v-int">
+            <div class="val-card-header">
+              <span class="val-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              </span>
+              <div>
+                <strong>Integridad referencial</strong>
+                <span>Ambas tablas sincronizadas</span>
+              </div>
+            </div>
+            <p class="val-desc">Verificar que todo usuario en <code>usuarios_perfil</code> tiene su contraparte en <code>usuarios_actividad</code> y viceversa.</p>
+            <button class="btn btn--val btn--val-v" id="btn-val-v" onclick="validarVertical()">
+              Ejecutar validación vertical 
+            </button>
+            <div id="result-val-v" class="result-box result-box--hidden" style="margin-top:12px"></div>
+          </div>
+
+          <div class="val-card" id="val-v-join">
+            <div class="val-card-header">
+              <span class="val-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+              </span>
+              <div>
+                <strong>Reconstrucción con JOIN</strong>
+                <span>Ninguna columna se pierde</span>
+              </div>
+            </div>
+            <p class="val-desc">El JOIN reconstituye la fila completa. La información no se pierde al dividir verticalmente.</p>
+            <div class="val-demo">
+              <span class="val-formula" style="color:var(--perfil)">usuarios_perfil (5 cols)</span>
+              <span class="val-formula">+</span>
+              <span class="val-formula" style="color:var(--activ)">usuarios_actividad (5 cols)</span>
+              <span class="val-formula">→</span>
+              <span class="val-formula" style="color:#fff;font-weight:700">9 cols totales</span>
+            </div>
+          </div>
+
         </div>
       </div>
 
