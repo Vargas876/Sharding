@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sharding Demo — Horizontal & Vertical</title>
+  <meta name="description" content="Demostración interactiva de sharding horizontal y vertical con SQLite y Node.js" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-icon">⬡</span>
+        <span class="logo-text">ShardingDB</span>
+        <span class="logo-badge">Demo</span>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Tipo de sharding">
+        <button class="tab tab--active" id="tab-h" role="tab" aria-selected="true" aria-controls="panel-h" onclick="switchTab('h')">
+          <span class="tab-icon">↔</span> Sharding Horizontal
+        </button>
+        <button class="tab" id="tab-v" role="tab" aria-selected="false" aria-controls="panel-v" onclick="switchTab('v')">
+          <span class="tab-icon">↕</span> Sharding Vertical
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- ====== PANEL HORIZONTAL ====== -->
+    <section id="panel-h" class="panel panel--active" role="tabpanel" aria-labelledby="tab-h">
+
+      <!-- Concepto -->
+      <div class="concept-card">
+        <div class="concept-header">
+          <span class="concept-icon">↔</span>
+          <div>
+            <h1 class="concept-title">Sharding Horizontal</h1>
+            <p class="concept-sub">Particionamiento de <strong>filas</strong> — cada fila va a un shard diferente según su ID</p>
+          </div>
+        </div>
+        <div class="formula-block">
+          <code class="formula">shard_id = cliente_id % N_SHARDS</code>
+          <span class="formula-label">Hash-based routing · 3 shards</span>
+        </div>
+        <div class="concept-grid">
+          <div class="concept-item">
+            <span class="ci-number">01</span>
+            <div class="ci-text">
+              <strong>Distribuye filas</strong>
+              <span>Cada shard contiene un subconjunto de las filas totales</span>
+            </div>
+          </div>
+          <div class="ci-arrow">→</div>
+          <div class="concept-item">
+            <span class="ci-number">02</span>
+            <div class="ci-text">
+              <strong>Routing automático</strong>
+              <span>La función hash determina en qué shard buscar o escribir</span>
+            </div>
+          </div>
+          <div class="ci-arrow">→</div>
+          <div class="concept-item">
+            <span class="ci-number">03</span>
+            <div class="ci-text">
+              <strong>Escalabilidad</strong>
+              <span>Añadir shards distribuye la carga — sin bottleneck central</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="actions-row">
+
+        <!-- Insertar -->
+        <div class="action-card" id="action-insert-h">
+          <h2 class="action-title">
+            <span class="action-num">A</span> Insertar Cliente
+          </h2>
+          <form id="form-h-insert" class="form" onsubmit="insertarClienteH(event)">
+            <div class="field-row">
+              <label class="field-label" for="h-id">ID</label>
+              <input class="field-input" id="h-id" type="number" placeholder="13" min="1" required />
+            </div>
+            <div class="field-row">
+              <label class="field-label" for="h-nombre">Nombre</label>
+              <input class="field-input" id="h-nombre" type="text" placeholder="Laura Quintero" required />
+            </div>
+            <div class="field-row">
+              <label class="field-label" for="h-email">Email</label>
+              <input class="field-input" id="h-email" type="email" placeholder="laura@mail.com" required />
+            </div>
+            <div class="field-row">
+              <label class="field-label" for="h-ciudad">Ciudad</label>
+              <input class="field-input" id="h-ciudad" type="text" placeholder="Bogotá" required />
+            </div>
+            <button class="btn btn--primary" type="submit" id="btn-insert-h">Insertar →</button>
+          </form>
+          <div id="result-insert-h" class="result-box result-box--hidden"></div>
+        </div>
+
+        <!-- Buscar -->
+        <div class="action-card" id="action-search-h">
+          <h2 class="action-title">
+            <span class="action-num">B</span> Buscar por ID
+          </h2>
+          <p class="action-desc">El sistema calcula el shard correcto sin consultar los demás.</p>
+          <form id="form-h-search" class="form" onsubmit="buscarClienteH(event)">
+            <div class="field-row">
+              <label class="field-label" for="h-search-id">ID del cliente</label>
+              <input class="field-input" id="h-search-id" type="number" placeholder="5" min="1" required />
+            </div>
+            <button class="btn btn--secondary" type="submit" id="btn-search-h">Buscar →</button>
+          </form>
+          <div id="result-search-h" class="result-box result-box--hidden"></div>
+        </div>
+
+      </div>
+
+      <!-- Visualización de shards -->
+      <div class="shards-section">
+        <div class="section-header">
+          <h2 class="section-title">Distribución de Shards en tiempo real</h2>
+          <button class="btn btn--ghost btn--sm" onclick="cargarTodosH()">↺ Actualizar</button>
+        </div>
+        <div id="stats-bar" class="stats-bar"></div>
+        <div id="shards-grid" class="shards-grid">
+          <div class="shard-loading">Cargando datos...</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ====== PANEL VERTICAL ====== -->
+    <section id="panel-v" class="panel" role="tabpanel" aria-labelledby="tab-v">
+
+      <!-- Concepto -->
+      <div class="concept-card concept-card--v">
+        <div class="concept-header">
+          <span class="concept-icon">↕</span>
+          <div>
+            <h1 class="concept-title">Sharding Vertical</h1>
+            <p class="concept-sub">Particionamiento de <strong>columnas</strong> — una tabla se divide en tablas especializadas</p>
+          </div>
+        </div>
+        <div class="formula-block formula-block--v">
+          <code class="formula">usuarios = usuarios_perfil JOIN usuarios_actividad ON id</code>
+          <span class="formula-label">Join-on-read · Tablas especializadas</span>
+        </div>
+        <div class="v-split-diagram" aria-label="Diagrama de split vertical">
+          <div class="v-table v-table--full">
+            <div class="vt-header">tabla: usuarios (original)</div>
+            <div class="vt-cols">
+              <span class="col-tag col-tag--perfil">id</span>
+              <span class="col-tag col-tag--perfil">nombre</span>
+              <span class="col-tag col-tag--perfil">email</span>
+              <span class="col-tag col-tag--perfil">pais</span>
+              <span class="col-tag col-tag--perfil">plan</span>
+              <span class="col-tag col-tag--activ">ultimo_login</span>
+              <span class="col-tag col-tag--activ">total_compras</span>
+              <span class="col-tag col-tag--activ">score</span>
+              <span class="col-tag col-tag--activ">activo</span>
+            </div>
+          </div>
+          <div class="v-arrow">⬇ Split</div>
+          <div class="v-split-row">
+            <div class="v-table v-table--perfil">
+              <div class="vt-header vt-header--perfil">🟢 usuarios_perfil</div>
+              <div class="vt-cols">
+                <span class="col-tag col-tag--perfil">id</span>
+                <span class="col-tag col-tag--perfil">nombre</span>
+                <span class="col-tag col-tag--perfil">email</span>
+                <span class="col-tag col-tag--perfil">pais</span>
+                <span class="col-tag col-tag--perfil">plan</span>
+              </div>
+            </div>
+            <div class="v-join-hint">JOIN</div>
+            <div class="v-table v-table--activ">
+              <div class="vt-header vt-header--activ">🟠 usuarios_actividad</div>
+              <div class="vt-cols">
+                <span class="col-tag col-tag--activ">usuario_id</span>
+                <span class="col-tag col-tag--activ">ultimo_login</span>
+                <span class="col-tag col-tag--activ">total_compras</span>
+                <span class="col-tag col-tag--activ">score</span>
+                <span class="col-tag col-tag--activ">activo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones -->
+      <div class="actions-row">
+
+        <!-- Insertar -->
+        <div class="action-card">
+          <h2 class="action-title">
+            <span class="action-num">A</span> Insertar Usuario
+          </h2>
+          <form id="form-v-insert" class="form" onsubmit="insertarUsuarioV(event)">
+            <div class="field-row">
+              <label class="field-label" for="v-id">ID</label>
+              <input class="field-input" id="v-id" type="number" placeholder="7" min="1" required />
+            </div>
+            <div class="field-row">
+              <label class="field-label" for="v-nombre">Nombre</label>
+              <input class="field-input" id="v-nombre" type="text" placeholder="Juliana Ospina" required />
+            </div>
+            <div class="field-row">
+              <label class="field-label" for="v-email">Email</label>
+              <input class="field-input" id="v-email" type="email" placeholder="juli@mail.com" required />
+            </div>
+            <div class="field-row">
+              <label class="field-label" for="v-pais">País</label>
+              <input class="field-input" id="v-pais" type="text" placeholder="Colombia" />
+            </div>
+            <div class="field-row">
+              <label class="field-label" for="v-plan">Plan</label>
+              <select class="field-input" id="v-plan">
+                <option>Básico</option>
+                <option>Pro</option>
+                <option>Premium</option>
+              </select>
+            </div>
+            <div class="field-row">
+              <label class="field-label" for="v-compras">Compras</label>
+              <input class="field-input" id="v-compras" type="number" placeholder="0" min="0" />
+            </div>
+            <div class="field-row">
+              <label class="field-label" for="v-score">Score</label>
+              <input class="field-input" id="v-score" type="number" step="0.1" placeholder="5.0" min="0" max="10" />
+            </div>
+            <button class="btn btn--primary" type="submit" id="btn-insert-v">Insertar en ambas tablas →</button>
+          </form>
+          <div id="result-insert-v" class="result-box result-box--hidden"></div>
+        </div>
+
+        <!-- Buscar -->
+        <div class="action-card">
+          <h2 class="action-title">
+            <span class="action-num">B</span> Reconstruir con JOIN
+          </h2>
+          <p class="action-desc">Consulta perfil + actividad y los une en una sola fila.</p>
+          <form id="form-v-search" class="form" onsubmit="buscarUsuarioV(event)">
+            <div class="field-row">
+              <label class="field-label" for="v-search-id">ID del usuario</label>
+              <input class="field-input" id="v-search-id" type="number" placeholder="3" min="1" required />
+            </div>
+            <button class="btn btn--secondary" type="submit" id="btn-search-v">Hacer JOIN →</button>
+          </form>
+          <div id="result-search-v" class="result-box result-box--hidden"></div>
+        </div>
+
+      </div>
+
+      <!-- Tablas comparativas -->
+      <div class="shards-section">
+        <div class="section-header">
+          <h2 class="section-title">Tablas verticales en tiempo real</h2>
+          <button class="btn btn--ghost btn--sm" onclick="cargarTodosV()">↺ Actualizar</button>
+        </div>
+        <div id="v-tables-grid" class="v-tables-grid">
+          <div class="shard-loading">Cargando datos...</div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <p>Demo académico · Sharding Horizontal y Vertical · SQLite + Node.js + Express</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

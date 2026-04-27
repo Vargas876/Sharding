@@ -1,0 +1,15 @@
+{
+  "name": "sharding-demo",
+  "version": "1.0.0",
+  "description": "Demo de Sharding Horizontal y Vertical con SQLite",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "sql.js": "^1.12.0",
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}
