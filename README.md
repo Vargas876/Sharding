@@ -1,4 +1,4 @@
-# Sharding Demo — Horizontal & Vertical 🚀
+# Sharding Demo — Horizontal & Vertical 
 
 Este proyecto es una aplicación web interactiva diseñada para demostrar y validar los conceptos de **Sharding Horizontal** y **Sharding Vertical** utilizando un entorno moderno basado en **Node.js** y **SQLite**.
 
